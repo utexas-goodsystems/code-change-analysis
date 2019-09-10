@@ -1,4 +1,3 @@
-#!/usr/local/bin/python3
 """Time zones from UTC offsets
 
 Copyright (c) 2019 The University of Texas at Austin. All rights reserved.

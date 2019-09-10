@@ -1,4 +1,3 @@
-#!/usr/local/bin/python3
 """Match git log enties for ethics-relevant changes
 
 Copyright (c) 2019 The University of Texas at Austin. All rights reserved.
