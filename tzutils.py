@@ -8,7 +8,6 @@ the LICENSE file found in the project's top-level directory.
 
 import datetime
 
-
 ZERO = datetime.timedelta(0)
 
 
@@ -28,7 +27,6 @@ class FixedOffsetTZInfo(datetime.tzinfo):
 
     def __getinitargs__(self):
         return (self.offsetstring(),)
-    
 
     def utcoffset(self, dt):
         return self.__offset
@@ -48,6 +46,7 @@ class FixedOffsetTZInfo(datetime.tzinfo):
 
 
 tz_cache = {}
+
 
 def get_tz_for_offset(offset_string):
     """"Get a tzinfo for an offset, either a cached instance or new"""

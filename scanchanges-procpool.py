@@ -23,7 +23,10 @@ def main(argv=None):
     git_log = gitutils.get_git_log()
 
     with concurrent.futures.ProcessPoolExecutor() as executor:
-        filtered_log = list(itertools.compress(git_log, executor.map(changematch.log_entry_matches, git_log)))
+        filtered_log = list(
+            itertools.compress(git_log,
+                               executor.map(changematch.log_entry_matches,
+                                            git_log)))
 
     outputchanges.outputchanges(git_log, filtered_log, argv)
 

@@ -15,11 +15,12 @@ import tzutils
 def get_git_log():
     """"Retrieve the git log in the current repo as a list of commits"""
     git_log_out = subprocess.run(
-        ['git', 'log', '--pretty=raw', '--no-color', '-z'],
+        ['git', 'log', '--pretty=raw', '--no-color', '--encoding=UTF-8', '-z'],
         check=True,
         stdout=subprocess.PIPE,
         stderr=sys.stderr.fileno(),
-        text=True,
+        encoding='utf-8',
+        errors='ignore',
     ).stdout
     git_log_split = git_log_out.split('\0')
     git_log = []

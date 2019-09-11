@@ -8,7 +8,6 @@ the LICENSE file found in the project's top-level directory.
 
 import re
 
-
 COMMIT_MESSAGE_RE = re.compile('\\bsecur|\\bleak|\\bhole', re.IGNORECASE)
 
 
