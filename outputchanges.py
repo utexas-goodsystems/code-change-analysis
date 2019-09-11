@@ -93,7 +93,7 @@ def plot_histogram(git_log, filtered_log, argv):
 
     ax.set(
         title=os.path.basename(os.getcwd()) +
-        ' Possible Security-Relevant Commits')
+        ' Changes Matching Security Keywords')
 
     all_dates_counts, bins = np.histogram(all_dates, bins=36)
     filtered_dates_counts, _ = np.histogram(filtered_dates, bins=bins)

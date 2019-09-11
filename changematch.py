@@ -8,7 +8,10 @@ the LICENSE file found in the project's top-level directory.
 
 import re
 
-COMMIT_MESSAGE_RE = re.compile('\\bsecur|\\bleak|\\bhole', re.IGNORECASE)
+COMMIT_MESSAGE_RE = re.compile('\\battack|\\bbreach|\\bbruteforce|\\bbrute force|\\bcrypto|\\bexploit|\\bfirewall|\\bhole|\\bleak|\\bmalicious|\\bman-in-the-middle|\\bmitm|\\bpenetration|\\bprivacy|\\bquarantine|\\bsabotage|\\bsecur|\\bspoof|\\btamper|\\btrojan|\\btrust|\\bunauthorized|\\bvirus', re.IGNORECASE)
+
+# Some keywords from the Data Protection RDF draft
+#COMMIT_MESSAGE_RE = re.compile('\\bbreach|\\bconsent|\\bdata protection|\\berasure|\\blawful|\\bpersonal data|\\bprivacy|\\bsecur|\\btransparency|\\btrust', re.IGNORECASE)
 
 
 def log_entry_matches(log_entry):
