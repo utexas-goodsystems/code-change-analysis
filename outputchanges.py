@@ -19,7 +19,7 @@ import matplotlib.dates as mdates
 
 def plot_timeline(git_log, filtered_log, argv):
     names = [entry['commit'][:7] for entry in filtered_log]
-    dates = [entry['author.date'] for entry in filtered_log]
+    dates = [entry['committer.date'] for entry in filtered_log]
 
     # Derived from excerpt of Matplotlib timeline example:
     # https://matplotlib.org/gallery/lines_bars_and_markers/timeline.html
@@ -80,11 +80,11 @@ def start_of_next_quarter(dt):
 
 def plot_histogram(git_log, filtered_log, argv):
     all_dates = [
-        mdates.date2num(entry['author.date'].astimezone(datetime.timezone.utc))
+        mdates.date2num(entry['committer.date'].astimezone(datetime.timezone.utc))
         for entry in git_log
     ]
     filtered_dates = [
-        mdates.date2num(entry['author.date'].astimezone(datetime.timezone.utc))
+        mdates.date2num(entry['committer.date'].astimezone(datetime.timezone.utc))
         for entry in filtered_log
     ]
 
@@ -96,14 +96,9 @@ def plot_histogram(git_log, filtered_log, argv):
         ' Possible Security-Relevant Commits')
 
     all_dates_counts, bins = np.histogram(all_dates, bins=36)
-    print('all_dates_counts', all_dates_counts)
-    print('bins', bins)
     filtered_dates_counts, _ = np.histogram(filtered_dates, bins=bins)
-    print('filtered_dates_counts', filtered_dates_counts)
     scale_factor = max(filtered_dates_counts) / max(all_dates_counts)
-    print('scale_factor', scale_factor)
     all_dates_counts_scaled = [x * scale_factor for x in all_dates_counts]
-    print('all_dates_counts_scaled', all_dates_counts_scaled)
 
     pyplot.hist(
         bins[:-1], bins, weights=filtered_dates_counts, histtype='stepfilled')
@@ -128,7 +123,7 @@ def outputchanges(git_log, filtered_log, argv):
 
     writer = csv.DictWriter(
         sys.stdout,
-        fieldnames=['commit', 'author.date', 'commit message'],
+        fieldnames=['commit', 'committer.date', 'commit message'],
         extrasaction='ignore')
     writer.writeheader()
     for entry in filtered_log:
