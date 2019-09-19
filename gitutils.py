@@ -49,3 +49,15 @@ def get_git_log():
                 float(s[2]), tzutils.get_tz_for_offset(s[3]))
         git_log.append(log_entry)
     return git_log
+
+def git_diff(from_commit, to_commit):
+    """"Compute the diff between two commits"""
+    git_diff_out = subprocess.run(
+        ['git', 'diff', from_commit, to_commit],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=sys.stderr.fileno(),
+        encoding='utf-8',
+        errors='ignore',
+    ).stdout
+    return git_diff_out
