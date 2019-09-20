@@ -12,28 +12,31 @@ import os
 import csv
 import datetime
 import matplotlib.pyplot as pyplot
+import matplotlib.artist as artist
 import matplotlib.ticker as ticker
 import numpy as np
 import matplotlib.dates as mdates
 
 
 def plot_timeline(git_log, filtered_log, argv):
+    title = os.path.basename(
+        os.getcwd()) + ' Timeline of Changes Matching Security Keywords'
+
     names = [entry['commit'][:7] for entry in filtered_log]
     dates = [entry['committer.date'] for entry in filtered_log]
 
     # Derived from excerpt of Matplotlib timeline example:
     # https://matplotlib.org/gallery/lines_bars_and_markers/timeline.html
 
-    fig, ax = pyplot.subplots(figsize=(8.8, 4), constrained_layout=True)
+    fig, ax = pyplot.subplots(
+        num=title, figsize=(8.8, 4), constrained_layout=True)
     levels = np.tile([-5, 5, -3, 3, -1, 1],
                      int(np.ceil(len(dates) / 6)))[:len(dates)]
 
-    ax.set(
-        title=os.path.basename(os.getcwd()) +
-        ' Possible Security-Relevant Commits')
+    ax.set(title=title)
     markerline, stemline, baseline = ax.stem(
         dates, levels, linefmt='C3-', basefmt='k-', use_line_collection=True)
-    pyplot.setp(markerline, mec='k', mfc='w', zorder=3)
+    artist.setp(markerline, mec='k', mfc='w', zorder=3)
     markerline.set_ydata(np.zeros(len(dates)))
     vert = np.array(['top', 'bottom'])[(levels > 0).astype(int)]
     for d, l, r, va in zip(dates, levels, names, vert):
@@ -48,7 +51,7 @@ def plot_timeline(git_log, filtered_log, argv):
     # format xaxis with 4 month intervals
     ax.get_xaxis().set_major_locator(mdates.MonthLocator(interval=4))
     ax.get_xaxis().set_major_formatter(mdates.DateFormatter('%b %Y'))
-    pyplot.setp(ax.get_xticklabels(), rotation=30, ha='right')
+    artist.setp(ax.get_xticklabels(), rotation=30, ha='right')
 
     ax.get_yaxis().set_visible(False)
     for spine in ['left', 'top', 'right']:
@@ -79,42 +82,51 @@ def start_of_next_quarter(dt):
 
 
 def plot_histogram(git_log, filtered_log, argv):
+    title = os.path.basename(
+        os.getcwd()) + ' Count of Changes Matching Security Keywords'
+
     all_dates = [
-        mdates.date2num(entry['committer.date'].astimezone(datetime.timezone.utc))
-        for entry in git_log
+        mdates.date2num(entry['committer.date'].astimezone(
+            datetime.timezone.utc)) for entry in git_log
     ]
     filtered_dates = [
-        mdates.date2num(entry['committer.date'].astimezone(datetime.timezone.utc))
-        for entry in filtered_log
+        mdates.date2num(entry['committer.date'].astimezone(
+            datetime.timezone.utc)) for entry in filtered_log
     ]
 
     pyplot.style.use('bmh')
-    fig, ax = pyplot.subplots(figsize=(8.8, 4), constrained_layout=True)
+    fig, ax1 = pyplot.subplots(
+        num=title, figsize=(8.8, 4), constrained_layout=True)
+    ax2 = ax1.twinx()
 
-    ax.set(
-        title=os.path.basename(os.getcwd()) +
-        ' Changes Matching Security Keywords')
+    ax1.set(title=title)
+    ax1.set_ylabel('Matching commit count', color='C0')
+    ax1.tick_params('y', colors='C0')
+    ax1.grid(axis='y')
+    ax2.set_ylabel('All commits count', color='C1')
+    ax2.tick_params('y', colors='C1')
+    ax2.grid(axis='y')
 
     all_dates_counts, bins = np.histogram(all_dates, bins=36)
     filtered_dates_counts, _ = np.histogram(filtered_dates, bins=bins)
-    scale_factor = max(filtered_dates_counts) / max(all_dates_counts)
-    all_dates_counts_scaled = [x * scale_factor for x in all_dates_counts]
 
-    pyplot.hist(
-        bins[:-1], bins, weights=filtered_dates_counts, histtype='stepfilled')
-    pyplot.hist(
-        bins[:-1], bins, weights=all_dates_counts_scaled, histtype='step')
-
-    #binvals1, bins1, _ = ax.hist(filtered_dates, bins=bins1, histtype='stepfilled')
-    #ax.hist(all_dates, bins=36, weights=all_dates_weights, histtype='step')
+    ax1.hist(
+        bins[:-1],
+        bins,
+        weights=filtered_dates_counts,
+        histtype='stepfilled',
+        color='C0')
+    ax2.hist(
+        bins[:-1], bins, weights=all_dates_counts, histtype='step', color='C1')
 
     locator = mdates.AutoDateLocator()
-    ax.xaxis.set_major_locator(locator)
-    ax.xaxis.set_major_formatter(mdates.ConciseDateFormatter(locator))
-    pyplot.setp(ax.get_xticklabels(), rotation=30, ha='right')
+    ax1.xaxis.set_major_locator(locator)
+    ax1.xaxis.set_major_formatter(mdates.ConciseDateFormatter(locator))
+    artist.setp(ax1.get_xticklabels(), rotation=30, ha='right')
 
     for spine in ['top', 'right']:
-        ax.spines[spine].set_visible(False)
+        ax1.spines[spine].set_visible(False)
+        ax2.spines[spine].set_visible(False)
 
 
 def outputchanges(git_log, filtered_log, argv):
