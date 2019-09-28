@@ -18,8 +18,11 @@ import outputchanges
 
 
 def main(argv=None):
-    if argv is not None:
-        os.chdir(argv[1])
+    """concurrent.futures-based (multiprocess, single host) implementation"""
+    if len(sys.argv) != 2:
+        sys.stderr.write('scanchanges: HALT: usage: scanchanges git-dir\n')
+        return 64 # Exit status 64: Command line usage error
+    os.chdir(argv[1])
     git_log = gitutils.get_git_log()
 
     with concurrent.futures.ProcessPoolExecutor() as executor:

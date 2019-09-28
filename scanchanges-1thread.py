@@ -16,8 +16,11 @@ import outputchanges
 
 
 def main(argv=None):
-    if argv is not None:
-        os.chdir(argv[1])
+    """Single-threaded implementation"""
+    if len(sys.argv) != 2:
+        sys.stderr.write('scanchanges: HALT: usage: scanchanges git-dir\n')
+        return 64 # Exit status 64: Command line usage error
+    os.chdir(argv[1])
     git_log = gitutils.get_git_log()
     filtered_log = list(filter(changematch.log_entry_matches, git_log))
 
