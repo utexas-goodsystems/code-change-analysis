@@ -38,6 +38,9 @@ class JobObjectsManager(BaseManager):
 
 
 def run_leader(address, authkey):
+    """Run the leader, which adds work items to the work queue, retreives
+    all the results from the result queue, and calls outputchanges on the
+    results."""
     shared_objects = JobObjectsManager.new_server_manager(
         address=address, authkey=authkey)
     with shared_objects:  # Starts server, and shuts down on exit
@@ -46,6 +49,7 @@ def run_leader(address, authkey):
         git_log = gitutils.get_git_log()
         for log_entry in git_log:
             work_queue.put_nowait(log_entry)
+        # A closeable queue would work better here.
         work_queue.put_nowait('END-OF-JOB')
         filtered_log = []
         worker_count = 0
@@ -63,6 +67,9 @@ def run_leader(address, authkey):
 
 
 def run_follower(address, authkey):
+    """Run a follower, which gets work items from the work queue, calls
+    changematch.log_entry_matches on each, and if the result is true,
+    puts the work item on the result queue."""
     shared_objects = JobObjectsManager.new_client_stub(
         address=address, authkey=authkey)
     shared_objects.connect()
