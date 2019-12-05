@@ -18,11 +18,19 @@ import gitutils
 # Combined list
 COMMIT_MESSAGE_RE = re.compile('\\battack|\\bbreach|\\bbruteforce|\\bbrute force|\\bconsent\\bcrypto|\\bexploit|\\bfirewall|\\blawful|\\bmalicious|\\bman-in-the-middle|\\bmitm|\\bpenetration|\\bpersonal data|\\bprivacy|\\bquarantine|\\bsabotage|\\bsecur|\\bspoof|\\btamper|\\btrojan|\\btrust|\\bunauthorized|\\bvirus', re.IGNORECASE)
 
+# Vulnerability Branding example
+#COMMIT_MESSAGE_RE = re.compile('\\bheartbleed|\\bmeltdown|\\bspectre|\\bpoodle', re.IGNORECASE)
+
 DIFF_RE = COMMIT_MESSAGE_RE
 
 
+def match_description():
+    return 'Changes Matching Security Keywords'
+#    return 'Changes Matching 4 Vulnerability Names'
+
+
 def log_entry_matches(log_entry):
-    """If given git log entry is of interest, retun true"""
+    """If given git log entry is of interest, return true"""
     if 'commit message' in log_entry:
         if COMMIT_MESSAGE_RE.search(log_entry['commit message']) is not None:
             return True

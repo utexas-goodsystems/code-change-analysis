@@ -31,7 +31,7 @@ def main(argv=None):
                                executor.map(changematch.log_entry_matches,
                                             git_log)))
 
-    outputchanges.outputchanges(git_log, filtered_log, argv)
+    outputchanges.outputchanges(git_log, filtered_log, changematch.match_description(), argv)
 
     return 0
 

@@ -18,9 +18,9 @@ import numpy as np
 import matplotlib.dates as mdates
 
 
-def plot_timeline(git_log, filtered_log, argv):
+def plot_timeline(git_log, filtered_log, match_description, argv):
     title = os.path.basename(
-        os.getcwd()) + ' Timeline of Changes Matching Security Keywords'
+        os.getcwd()) + ' Timeline of ' + match_description
 
     names = [entry['commit'][:7] for entry in filtered_log]
     dates = [entry['committer.date'] for entry in filtered_log]
@@ -81,9 +81,9 @@ def start_of_next_quarter(dt):
             month=start_month, day=1, hour=0, minute=0, second=0, microsecond=0)
 
 
-def plot_histogram(git_log, filtered_log, argv):
+def plot_histogram(git_log, filtered_log, match_description, argv):
     title = os.path.basename(
-        os.getcwd()) + ' Count of Changes Matching Security Keywords'
+        os.getcwd()) + ' Count of ' + match_description
 
     all_dates = [
         mdates.date2num(entry['committer.date'].astimezone(
@@ -129,7 +129,7 @@ def plot_histogram(git_log, filtered_log, argv):
         ax2.spines[spine].set_visible(False)
 
 
-def outputchanges(git_log, filtered_log, argv):
+def outputchanges(git_log, filtered_log, match_description, argv):
     #print('Of ' + str(len(git_log)) + ' entries, ' + str(len(filtered_log)) +
     #      ' match.')
 
@@ -141,6 +141,6 @@ def outputchanges(git_log, filtered_log, argv):
     for entry in filtered_log:
         writer.writerow(entry)
 
-    #plot_timeline(git_log, filtered_log, argv)
-    plot_histogram(git_log, filtered_log, argv)
+    #plot_timeline(git_log, filtered_log, match_description, argv)
+    plot_histogram(git_log, filtered_log, match_description, argv)
     pyplot.show()
