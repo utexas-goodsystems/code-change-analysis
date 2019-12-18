@@ -16,7 +16,7 @@ import gitutils
 #COMMIT_MESSAGE_RE = re.compile('\\bbreach|\\bconsent|\\bdata protection|\\berasure|\\blawful|\\bpersonal data|\\bprivacy|\\bsecur|\\btransparency|\\btrust', re.IGNORECASE)
 
 # Combined list
-COMMIT_MESSAGE_RE = re.compile('\\battack|\\bbreach|\\bbruteforce|\\bbrute force|\\bconsent\\bcrypto|\\bexploit|\\bfirewall|\\blawful|\\bmalicious|\\bman-in-the-middle|\\bmitm|\\bpenetration|\\bpersonal data|\\bprivacy|\\bquarantine|\\bsabotage|\\bsecur|\\bspoof|\\btamper|\\btrojan|\\btrust|\\bunauthorized|\\bvirus', re.IGNORECASE)
+COMMIT_MESSAGE_RE = re.compile('\\battack|\\bbreach|\\bbruteforce|\\bbrute force|\\bconsent|\\bcrypto|\\bexploit|\\bfirewall|\\blawful|\\bmalicious|\\bman-in-the-middle|\\bmitm|\\bpenetration|\\bpersonal data|\\bprivacy|\\bquarantine|\\bsabotage|\\bsecur|\\bspoof|\\btamper|\\btrojan|\\btrust|\\bunauthorized|\\bvirus', re.IGNORECASE)
 
 # Vulnerability Branding example
 #COMMIT_MESSAGE_RE = re.compile('\\bheartbleed|\\bmeltdown|\\bspectre|\\bpoodle', re.IGNORECASE)
