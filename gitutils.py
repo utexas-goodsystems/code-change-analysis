@@ -61,3 +61,15 @@ def git_diff(from_commit, to_commit):
         errors='ignore',
     ).stdout
     return git_diff_out
+
+def git_diff_parents(commit):
+    """"Compute the diff between a commit and its parents, ignoring uninteresting merge diff hunks"""
+    git_diff_out = subprocess.run(
+        ['git', 'diff-tree', '--cc', commit],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=sys.stderr.fileno(),
+        encoding='utf-8',
+        errors='ignore',
+    ).stdout
+    return git_diff_out

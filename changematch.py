@@ -35,7 +35,7 @@ def log_entry_matches(log_entry):
         if COMMIT_MESSAGE_RE.search(log_entry['commit message']) is not None:
             return True
     if ('commit' in log_entry) and ('parent' in log_entry):
-        git_diff_out = gitutils.git_diff(log_entry['parent'], log_entry['commit'])
+        git_diff_out = gitutils.git_diff_parents(log_entry['commit'])
         if DIFF_RE.search(git_diff_out) is not None:
             return True
     return False
